@@ -1,0 +1,1185 @@
+:root {
+  /* ----------------------------------------------------------------
+   * Surfaces — neutral graphite. No green channel lift: every step is a
+   * cool charcoal so the UI never reads as an olive / green tone.
+   * ---------------------------------------------------------------- */
+  --bg-primary: #090B0D;
+  --surface-1: #111418;
+  --surface-2: #171B20;
+  --surface-3: #1D2228;
+  --surface-raised: #14181D;
+  --surface-code: #191E24;
+  --surface-hover: #222831;
+  --track-unfilled: #5C6572;
+  --bg-scrim: rgba(0, 0, 0, 0.72);
+
+  --border-default: #2B323B;
+  --border-subtle: rgba(255, 255, 255, 0.075);
+  --divider: rgba(255, 255, 255, 0.065);
+  --border-strong: #39414C;
+  /* Used where a boundary itself identifies a control (WCAG 1.4.11, 3:1). */
+  --border-interactive: #646E7B;
+
+  /* ----------------------------------------------------------------
+   * Text — neutral cool gray. Every step clears 4.5:1 on surface-1 and
+   * surface-2, including the small informational notes.
+   * ---------------------------------------------------------------- */
+  --text-primary: #F2F5F7;
+  --text-body: #C8CFD8;
+  --text-secondary: #B5BDC6;
+  --text-tertiary: #919BA6;
+  --text-muted: #8A939E;
+  --text-faint: #828C97;
+  --text-chevron: #5C6572;
+
+  /* ----------------------------------------------------------------
+   * Brand — VoltUp key color as a scarce signal. Full strength is
+   * reserved for small interactive marks; larger fills step down in
+   * luminance to cut glare.
+   * ---------------------------------------------------------------- */
+  --brand-primary: #D5FB06;
+  --brand-hover: #C7EC05;
+  --brand-active: #BADB08;
+  --brand-line: #C3E600;
+  --brand-fill: #BBD70F;
+  --brand-on: #101300;
+  --brand-muted: rgba(213, 251, 6, 0.08);
+  --brand-muted-strong: rgba(213, 251, 6, 0.13);
+  --brand-border: rgba(213, 251, 6, 0.28);
+  --brand-border-strong: rgba(213, 251, 6, 0.48);
+
+  --positive: var(--brand-fill);
+  --negative: #FF844A;
+  --negative-strong: #FF7043;
+  --neutral-bar: #626C79;
+
+  --diag-availability: var(--brand-line);
+  --diag-start: #A98CFF;
+  --diag-session: #48CFC1;
+  --diag-availability-bg: rgba(195, 230, 0, 0.10);
+  --diag-start-bg: rgba(169, 140, 255, 0.10);
+  --diag-session-bg: rgba(72, 207, 193, 0.10);
+  --diag-availability-border: rgba(195, 230, 0, 0.42);
+  --diag-start-border: rgba(169, 140, 255, 0.52);
+  --diag-session-border: rgba(72, 207, 193, 0.52);
+
+  --funnel-line: var(--brand-line);
+  --funnel-dash: rgba(255, 255, 255, 0.085);
+  --grid-line: rgba(255, 255, 255, 0.07);
+
+  --radius-card: 12px;
+  --radius-inner: 10px;
+  --radius-control: 7px;
+  --radius-chip: 6px;
+
+  --gutter: clamp(16px, 2vw, 26px);
+  --font-mono: ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-height: 100%;
+  background: var(--bg-primary);
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+  color: var(--text-primary);
+}
+
+/* Set while the measurement contract dialog is open. */
+body.has-modal { overflow: hidden; }
+
+.app {
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+/* ---------------- Header ---------------- */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px var(--gutter);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header__logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex: none;
+}
+
+.header__title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.header__disclaimer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  padding: 5px 11px;
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+  color: var(--text-body);
+  border: 1px solid var(--border-interactive);
+  white-space: nowrap;
+}
+
+/* ---------------- Tabs ---------------- */
+
+.tab-nav {
+  display: flex;
+  gap: 24px;
+  padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.tab-button {
+  padding: 12px 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.tab-button.is-active {
+  border-bottom-color: var(--brand-primary);
+  color: var(--text-primary);
+}
+
+/* ---------------- Content shell ---------------- */
+
+.content {
+  padding: 16px var(--gutter) 24px;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(440px, 1fr) minmax(260px, 320px);
+  gap: 18px;
+  align-items: start;
+}
+
+.layout-grid[hidden] { display: none; }
+
+.main-col { min-width: 0; }
+
+/* ---------------- Quick Scenarios (in-context presets) ---------------- */
+
+.quick-scenarios { margin-bottom: 14px; }
+
+.quick-scenarios__title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+  margin: 0 0 8px;
+}
+
+.quick-scenarios__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.preset-button {
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text-secondary);
+}
+
+.preset-button:hover { border-color: var(--border-interactive); }
+
+.preset-button.is-active {
+  border: 1.5px solid var(--brand-primary);
+  background: var(--brand-muted);
+  color: var(--text-primary);
+}
+
+.preset-button__tag {
+  display: block;
+  font-size: 9.5px;
+  color: var(--brand-primary);
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+.quick-scenarios__note {
+  font-size: 10px;
+  color: var(--text-faint);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.control-divider {
+  height: 1px;
+  background: var(--border-default);
+  margin: 0 0 14px;
+}
+
+.control-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+  margin: 0 0 8px;
+}
+
+/* ---------------- Cards ---------------- */
+
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-card);
+}
+
+.card--pad16 { padding: 16px; }
+.card--pad18 { padding: 18px; }
+.card--pad16-18 { padding: 16px 18px; }
+.card--pad14-18 { padding: 14px 18px; }
+
+.main-col > .card { margin-bottom: 14px; }
+.card[hidden] { display: none; }
+
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.card__header--top { align-items: flex-start; margin-bottom: 6px; }
+
+.card__title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.card__title--flush { margin-bottom: 0; }
+
+.card__meta {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.card__subtitle {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+.card__subtitle--tight { margin-bottom: 12px; }
+.card__subtitle--loose { margin-bottom: 16px; }
+
+.card__heading {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.card__heading--accent {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.card__heading-note {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 10.5px;
+}
+
+.sidebar-card { min-width: 0; }
+
+/* ---------------- Status badge ---------------- */
+
+.status-badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 9px;
+  border-radius: 20px;
+  background: var(--brand-muted);
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-border);
+  margin-bottom: 12px;
+}
+
+/* ---------------- Sliders ---------------- */
+
+.slider-row {
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.slider-row__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.slider-row__head--between {
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.slider-row__num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.slider-row__label {
+  font-size: 13px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.slider-row__label--econ {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.slider-row__value {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.slider-row__value--econ { font-size: 13px; }
+
+/* The filled portion is a reduced-luminance lime and only the thumb carries
+   full brand strength, so five stacked sliders no longer read as neon bars.
+   --fill is written per slider on render because WebKit has no equivalent of
+   ::-moz-range-progress. */
+.slider {
+  --fill: 50%;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 16px;
+  margin: 0 0 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--brand-fill) 0 var(--fill),
+    var(--track-unfilled) var(--fill) 100%
+  );
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  border: none;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+.slider::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--track-unfilled);
+}
+
+.slider::-moz-range-progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--brand-fill);
+}
+
+.slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: var(--brand-primary);
+}
+
+.slider:hover::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--brand-muted); }
+.slider:hover::-moz-range-thumb { box-shadow: 0 0 0 4px var(--brand-muted); }
+
+.slider:active::-webkit-slider-thumb { background: var(--brand-active); }
+.slider:active::-moz-range-thumb { background: var(--brand-active); }
+
+/* Focus keeps the shared ring; the halo is a second, stronger cue. */
+.slider:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 5px var(--brand-muted-strong); }
+.slider:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 5px var(--brand-muted-strong); }
+
+.slider--econ { margin-bottom: 5px; }
+
+.slider-row__foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-faint);
+}
+
+.slider-row__idx {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.reset-button {
+  font-size: 12px;
+  width: 100%;
+  padding: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-interactive);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ----------------------------------------------------------------
+ * Journey funnel
+ * Every element — stage node, stage label, chart point, value label,
+ * guide line and leakage label — is placed from the same x position
+ * array produced by stageXPositions(), so nothing can drift apart.
+ * ---------------------------------------------------------------- */
+
+.funnel { position: relative; }
+
+.funnel__row { position: relative; }
+
+.funnel__row--nodes { height: 26px; margin-bottom: 6px; }
+/* Demand always sits at index 100, so its value label renders above the plot
+   top edge; the extra gap keeps it clear of the stage label sharing that x. */
+.funnel__row--labels { height: 17px; margin-bottom: 32px; }
+.funnel__row--loss { height: 17px; margin-top: 6px; }
+
+.funnel__node {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+}
+
+.funnel__node.is-active {
+  background: var(--brand-primary);
+  color: var(--brand-on);
+  border-color: var(--brand-primary);
+}
+
+/* A lime ring would vanish on the lime fill, so the selected node uses a
+   neutral outline instead. */
+.funnel__node.is-active:focus-visible { outline-color: var(--text-primary); }
+
+.funnel__chevron {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-chevron);
+  line-height: 1;
+}
+
+.funnel__label {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 11.5px;
+  line-height: 17px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.funnel__loss-item {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 12.5px;
+  line-height: 17px;
+  font-weight: 700;
+  color: var(--negative);
+  white-space: nowrap;
+}
+
+.funnel__plot {
+  position: relative;
+  height: 210px;
+}
+
+.funnel__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.funnel__line { stroke: var(--funnel-line); }
+
+/* Very low alpha so the area reads as a tint, not a fluorescent block. */
+.funnel__area-stop--top {
+  stop-color: var(--brand-primary);
+  stop-opacity: 0.10;
+}
+
+.funnel__area-stop--bottom {
+  stop-color: var(--brand-primary);
+  stop-opacity: 0.01;
+}
+
+.leakage-note {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  background: var(--surface-2);
+  border-radius: var(--radius-control);
+}
+
+.leakage-note__value {
+  font-weight: 700;
+  color: var(--negative-strong);
+}
+
+/* ---------------- Metrics ---------------- */
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.metric-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  min-width: 0;
+}
+
+.metric-card__label {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.metric-card__value {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.metric-card__value.is-positive { color: var(--positive); }
+.metric-card__value.is-negative { color: var(--negative); }
+
+.metric-card__sub {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  margin-top: 4px;
+}
+
+/* ---------------- Decision boundary ---------------- */
+
+.boundary-line {
+  font-size: 12.5px;
+  color: var(--text-body);
+  margin: 0 0 6px;
+}
+
+.boundary-line--last { margin-bottom: 14px; }
+
+.boundary-line__key {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.evidence__caption {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 9px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.evidence__caption--tight {
+  font-size: 10.5px;
+  padding-top: 0;
+  border-top: none;
+  margin-bottom: 8px;
+}
+
+.chip-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip-row--gap14 { margin-bottom: 14px; }
+.chip-row--gap10 { margin-bottom: 10px; }
+
+.chip {
+  font-size: 11.5px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-chip);
+  padding: 4px 10px;
+}
+
+button.chip {
+  font-family: inherit;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+button.chip::after {
+  content: '›';
+  margin-left: 5px;
+  color: var(--text-muted);
+}
+
+button.chip:hover {
+  color: var(--text-primary);
+  border-color: var(--brand-border);
+}
+
+button.chip.is-open {
+  color: var(--text-primary);
+  border-color: var(--brand-border-strong);
+}
+
+button.chip:hover::after,
+button.chip.is-open::after { color: var(--brand-primary); }
+
+/* ---------------- Experience bridge ---------------- */
+
+.bridge {
+  border-left: 2px solid var(--border-interactive);
+  padding: 4px 0 4px 14px;
+}
+
+.bridge__eyebrow {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.bridge__title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.bridge__flow {
+  font-size: 12.5px;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.bridge__case {
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+  padding: 8px 10px;
+  background: var(--surface-2);
+  border-radius: var(--radius-control);
+  margin-bottom: 8px;
+}
+
+.bridge__ref {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+/* ---------------- Info toggle ---------------- */
+
+.info-toggle {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 4px 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  display: block;
+}
+
+.info-body {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding-top: 6px;
+  line-height: 1.7;
+}
+
+.info-body[hidden] { display: none; }
+
+/* ---------------- Diagnostic sidebar ---------------- */
+
+.diagnostic-card {
+  padding: 12px;
+  border-radius: var(--radius-inner);
+  margin-bottom: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+}
+
+/* Domain colour arrives as a translucent border plus a faint tint, so no card
+   is ever outlined in full-strength lime. */
+.diagnostic-card.is-active {
+  border-color: var(--stage-border);
+  background: var(--surface-3);
+}
+
+.diagnostic-card__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.diagnostic-card__icon {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-control);
+  background: var(--stage-bg);
+  color: var(--stage-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.diagnostic-card__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--stage-color);
+}
+
+.diagnostic-card__item {
+  display: block;
+  width: 100%;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  padding: 3px 0 3px 6px;
+  border-left: 2px solid var(--border-strong);
+  font-family: inherit;
+  text-align: left;
+}
+
+/* Only metrics that have a Measurement Contract get an interactive affordance. */
+button.diagnostic-card__item {
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-decoration-color: var(--border-interactive);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+button.diagnostic-card__item::after {
+  content: '›';
+  margin-left: 5px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+button.diagnostic-card__item:hover,
+button.diagnostic-card__item.is-open {
+  color: var(--text-primary);
+  text-decoration-color: var(--brand-primary);
+}
+
+button.diagnostic-card__item:hover::after,
+button.diagnostic-card__item.is-open::after { color: var(--brand-primary); }
+
+.diagnostic-empty {
+  padding: 14px;
+  border-radius: var(--radius-inner);
+  background: var(--surface-2);
+  border: 1px dashed var(--border-interactive);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.diagnostic-empty[hidden] { display: none; }
+
+/* ----------------------------------------------------------------
+ * Measurement Contract dialog — tertiary layer. Native <dialog> so the
+ * dashboard behind it is inert, Esc closes, and focus is handled by the
+ * platform. Styling stays intentionally quieter than the funnel.
+ * ---------------------------------------------------------------- */
+
+.contract-dialog {
+  width: min(760px, calc(100vw - 64px));
+  max-width: none;
+  max-height: 86vh;
+  padding: 0;
+  border: 1px solid var(--border-interactive);
+  border-radius: var(--radius-card);
+  background: var(--surface-1);
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.contract-dialog::backdrop { background: var(--bg-scrim); }
+
+.contract-dialog__inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 86vh;
+}
+
+.contract-dialog__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border-default);
+  background: var(--surface-raised);
+  flex: none;
+}
+
+.contract-dialog__headings { flex: 1; min-width: 0; }
+
+/* The only brand mark allowed inside the dialog. */
+.contract-dialog__eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-hover);
+}
+
+.contract-dialog__eyebrow-sub {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  margin-top: 3px;
+}
+
+.contract-dialog__close {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-chip);
+  background: var(--surface-3);
+  border: 1px solid var(--border-interactive);
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.contract-dialog__close:hover {
+  color: var(--text-primary);
+  border-color: var(--brand-border-strong);
+}
+
+/* Only this region scrolls, so the dashboard height never changes. */
+.contract-dialog__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 20px 18px;
+}
+
+.contract-dialog__body:focus { outline: none; }
+
+.contract-dialog__titleblock {
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--divider);
+}
+
+.contract-dialog__title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px;
+}
+
+.contract-dialog__meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.contract-dialog__foot {
+  flex: none;
+  padding: 11px 20px 13px;
+  border-top: 1px solid var(--border-default);
+  background: var(--surface-raised);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.contract-dialog__foot-primary {
+  display: block;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.contract-section { margin-bottom: 15px; }
+
+.contract-section:last-child { margin-bottom: 0; }
+
+.contract-section__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 5px;
+}
+
+.contract-section__text {
+  font-size: 12.5px;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.contract-section__text--formula {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: var(--surface-code);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-chip);
+  padding: 9px 11px;
+}
+
+.contract-section__text--muted {
+  color: var(--text-muted);
+  font-size: 11.5px;
+}
+
+.contract-section__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.contract-signal {
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-chip);
+  padding: 3px 8px;
+}
+
+@media (max-width: 1199px) {
+  .contract-dialog {
+    width: calc(100vw - 48px);
+  }
+}
+
+/* ---------------- Economics index / waterfall ---------------- */
+
+.index-readout { text-align: right; }
+
+.index-readout__value {
+  font-size: 30px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.index-readout__state {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.index-readout__state.is-positive { color: var(--positive); }
+.index-readout__state.is-negative { color: var(--negative); }
+
+.waterfall__caption {
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+}
+
+.waterfall {
+  position: relative;
+  height: 220px;
+}
+
+.waterfall__svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.waterfall__labels {
+  display: flex;
+  margin-top: 6px;
+}
+
+.waterfall__labels-cell {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.35;
+  min-width: 0;
+}
+
+.interpretation {
+  font-size: 12.5px;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ---------------- Impact ranking ---------------- */
+
+.impact-ranking__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.impact-ranking__rank {
+  font-size: 11px;
+  color: var(--text-faint);
+  width: 14px;
+  flex: none;
+}
+
+.impact-ranking__label {
+  font-size: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.impact-ranking__track {
+  width: 64px;
+  height: 7px;
+  background: var(--surface-hover);
+  border-radius: 4px;
+  overflow: hidden;
+  flex: none;
+}
+
+.impact-ranking__bar {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.impact-ranking__bar.is-positive { background: var(--positive); }
+.impact-ranking__bar.is-negative { background: var(--negative); }
+
+.impact-ranking__value {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  width: 32px;
+  text-align: right;
+  flex: none;
+}
+
+.impact-ranking__value.is-positive { color: var(--positive); }
+.impact-ranking__value.is-negative { color: var(--negative); }
+
+.impact-ranking__empty {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.impact-ranking__empty[hidden] { display: none; }
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 1199px) {
+  .layout-grid {
+    grid-template-columns: minmax(240px, 320px) 1fr;
+  }
+  .layout-grid > .sidebar-card {
+    grid-column: 1 / -1;
+  }
+}
