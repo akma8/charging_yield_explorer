@@ -177,6 +177,42 @@
 
   const CONTRACT_NOT_DEFINED_HINT = 'Measurement contract not defined in this illustrative model';
 
+  /**
+   * Analytics is a side-effect layer. Fixed enumerations only — never DOM text,
+   * never PII. GTM routes these dataLayer events; this file does not call gtag.
+   */
+  const ANALYTICS = {
+    tabName: { journey: 'journey', econ: 'economics' },
+    presets: {
+      avail: { tab_name: 'journey', preset_name: 'availability_stress' },
+      start: { tab_name: 'journey', preset_name: 'activation_failure_stress' },
+      op: { tab_name: 'economics', preset_name: 'operation_improve' }
+    },
+    contracts: {
+      faultRate: { metric_name: 'fault_rate', diagnostic_area: 'availability' },
+      authentication: { metric_name: 'authentication_failure_rate', diagnostic_area: 'start' },
+      abnormalTermination: { metric_name: 'abnormal_termination_rate', diagnostic_area: 'session' },
+      retrySuccess: { metric_name: 'retry_success_rate', diagnostic_area: 'recovery' }
+    },
+    econControls: {
+      utilization: { control_name: 'utilization', value_unit: 'percentage_point' },
+      availability: { control_name: 'availability', value_unit: 'percentage_point' },
+      price: { control_name: 'charging_price', value_unit: 'percent' },
+      electricity: { control_name: 'electricity_cost', value_unit: 'percent' },
+      sitecost: { control_name: 'site_cost', value_unit: 'percent' },
+      investment: { control_name: 'investment_burden', value_unit: 'percent' }
+    }
+  };
+
+  function trackEvent(eventName, parameters) {
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(Object.assign({ event: eventName }, parameters || {}));
+    } catch (error) {
+      /* Analytics failure must never affect product functionality. */
+    }
+  }
+
   /** Sections are skipped when the contract has no value for them. */
   const CONTRACT_SECTIONS = [
     { key: 'definition', label: 'Definition' },
@@ -657,6 +693,14 @@
       input.step = s.step;
       input.value = state.journey.vals[s.key];
       input.addEventListener('input', (e) => setJourneyVal(s.key, parseInt(e.target.value, 10)));
+      input.addEventListener('change', (e) => {
+        trackEvent('slider_change', {
+          tab_name: 'journey',
+          control_name: s.key,
+          control_value: parseInt(e.target.value, 10),
+          value_unit: 'percent'
+        });
+      });
 
       const foot = document.createElement('div');
       foot.className = 'slider-row__foot';
@@ -815,6 +859,16 @@
       input.step = d.step;
       input.value = state.economics.vals[d.key];
       input.addEventListener('input', (e) => setEconomicsVal(d.key, parseInt(e.target.value, 10)));
+      input.addEventListener('change', (e) => {
+        const meta = ANALYTICS.econControls[d.key];
+        if (!meta) return;
+        trackEvent('slider_change', {
+          tab_name: 'economics',
+          control_name: meta.control_name,
+          control_value: parseInt(e.target.value, 10),
+          value_unit: meta.value_unit
+        });
+      });
 
       const foot = document.createElement('div');
       foot.className = 'slider-row__foot';
@@ -1130,8 +1184,10 @@
    * ========================================================== */
 
   function setTab(tab) {
+    const changed = state.activeTab !== tab;
     state.activeTab = tab;
     render();
+    if (changed) trackEvent('tab_view', { tab_name: ANALYTICS.tabName[tab] });
   }
 
   function setJourneyVal(key, val) {
@@ -1149,6 +1205,7 @@
   function selectStage(key) {
     state.journey.selectedStage = state.journey.selectedStage === key ? null : key;
     render();
+    trackEvent('stage_select', { tab_name: 'journey', stage_name: key });
   }
 
   /** Opens the measurement contract without altering any scenario state. */
@@ -1159,6 +1216,8 @@
     document.body.classList.add('has-modal');
     dom.contractDialog.showModal();
     dom.contractBody.scrollTop = 0;
+    const meta = ANALYTICS.contracts[key];
+    if (meta) trackEvent('metric_contract_open', meta);
   }
 
   function closeContract() {
@@ -1180,12 +1239,14 @@
     state.journey.selectedStage = null;
     state.journey.preset = null;
     render();
+    trackEvent('scenario_reset', { tab_name: 'journey' });
   }
 
   function resetEconomics() {
     state.economics.vals = Object.assign({}, E_BASE);
     state.economics.preset = null;
     render();
+    trackEvent('scenario_reset', { tab_name: 'economics' });
   }
 
   function applyPreset(key) {
@@ -1205,6 +1266,8 @@
       state.economics.preset = 'Operation Improve';
     }
     render();
+    const meta = ANALYTICS.presets[key];
+    if (meta) trackEvent('preset_select', meta);
   }
 
   function bindEvents() {
