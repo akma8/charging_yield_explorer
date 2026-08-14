@@ -12,19 +12,19 @@
   const J_ORDER = ['demand', 'selection', 'availability', 'start', 'session', 'repeat'];
 
   const J_LABELS = {
-    demand: 'Demand',
-    selection: 'Selection',
-    availability: 'Availability',
-    start: 'Start',
-    session: 'Session',
-    repeat: 'Repeat'
+    demand: '수요 · Demand',
+    selection: '선택 · Selection',
+    availability: '가용성 · Availability',
+    start: '충전 시작 · Start',
+    session: '충전 세션 · Session',
+    repeat: '재이용 · Repeat'
   };
 
   const J_STAGE_DEFS = [
     { key: 'selection', label: '선택 · Selection', min: 50, max: 100, step: 1, num: 2 },
     { key: 'availability', label: '가용성 · Availability', min: 50, max: 100, step: 1, num: 3 },
-    { key: 'start', label: '시작 · Start', min: 50, max: 100, step: 1, num: 4 },
-    { key: 'session', label: '세션 · Session', min: 50, max: 100, step: 1, num: 5 },
+    { key: 'start', label: '충전 시작 · Start', min: 50, max: 100, step: 1, num: 4 },
+    { key: 'session', label: '충전 세션 · Session', min: 50, max: 100, step: 1, num: 5 },
     { key: 'repeat', label: '재이용 · Repeat', min: 20, max: 100, step: 1, num: 6 }
   ];
 
@@ -37,7 +37,7 @@
   const DIAG_DEFS = [
     {
       key: 'availability',
-      title: 'Availability',
+      title: '가용성 · Availability',
       color: 'var(--diag-availability)',
       bg: 'var(--diag-availability-bg)',
       border: 'var(--diag-availability-border)',
@@ -46,16 +46,16 @@
     },
     {
       key: 'start',
-      title: 'Start',
+      title: '충전 시작 · Start',
       color: 'var(--diag-start)',
       bg: 'var(--diag-start-bg)',
       border: 'var(--diag-start-border)',
       icon: ICONS.start,
-      items: ['Authentication', 'Payment', 'Compatibility', 'PnC (Plug and Charge)', 'Fallback']
+      items: ['Authentication', 'Payment', 'Compatibility', 'PnC (Plug & Charge)', 'Fallback']
     },
     {
       key: 'session',
-      title: 'Session',
+      title: '충전 세션 · Session',
       color: 'var(--diag-session)',
       bg: 'var(--diag-session-bg)',
       border: 'var(--diag-session-border)',
@@ -66,21 +66,21 @@
 
   const STAGE_CONTENT = {
     availability: {
-      context: 'Availability',
-      infer: '가용성 구간에서 상대적인 Leakage가 발생했습니다',
-      validate: '실제 장애·점유 원인과 개선 우선순위는 충전기별 Fault / Offline 데이터 확인이 필요합니다.',
+      context: '가용성',
+      infer: '가용성 구간에서 상대적인 이탈이 발생했습니다',
+      validate: '실제 원인과 개선 우선순위는 충전기별 장애·오프라인 데이터 확인이 필요합니다.',
       evidence: ['Charger Status', 'Offline Duration', 'Fault Code', 'Maintenance History']
     },
     start: {
-      context: 'Start failure',
-      infer: '시작 구간에서 상대적인 Leakage가 확대되었습니다',
-      validate: '실제 Root Cause와 개선 우선순위는 인증·결제·차량 조합별 Failure 데이터 확인이 필요합니다.',
+      context: '충전 시작 실패',
+      infer: '충전 시작 구간에서 상대적인 이탈이 확대되었습니다',
+      validate: '실제 원인과 개선 우선순위는 인증·결제·차량 조합별 실패 데이터 확인이 필요합니다.',
       evidence: ['Failure Code', 'Authentication Type', 'Payment Result', 'Vehicle × Charger Model', 'Retry / Fallback Result']
     },
     session: {
-      context: 'Session failure',
-      infer: '세션 구간에서 상대적인 Leakage가 발생했습니다',
-      validate: '실제 중단 원인과 개선 우선순위는 통신·차량·충전기 조합별 Session 데이터 확인이 필요합니다.',
+      context: '충전 세션 실패',
+      infer: '충전 세션 구간에서 상대적인 이탈이 발생했습니다',
+      validate: '실제 원인과 개선 우선순위는 통신·차량·충전기 조합별 세션 데이터 확인이 필요합니다.',
       evidence: ['Abnormal Termination Reason', 'Charger Model', 'Vehicle Type', 'Communication Context']
     }
   };
@@ -89,18 +89,18 @@
   const RECOVERY_EVIDENCE = ['Retry Result', 'Fallback Result', 'Remote Recovery Result', 'MTTR', 'Repeat Failure'];
 
   const DRIVERS = [
-    { key: 'utilization', label: '이용률 · Utilization', unit: '%p', min: -10, max: 10, step: 2, range: 10, dir: 1 },
-    { key: 'availability', label: '가용률 · Availability', unit: '%p', min: -5, max: 5, step: 1, range: 5, dir: 1 },
-    { key: 'price', label: '충전요금 · Charging Price', unit: '%', min: -10, max: 10, step: 2, range: 10, dir: 1 },
-    { key: 'electricity', label: '전력원가 · Electricity Cost', unit: '%', min: -20, max: 20, step: 4, range: 20, dir: -1 },
-    { key: 'sitecost', label: 'Site 비용 · Site Cost', unit: '%', min: -20, max: 20, step: 4, range: 20, dir: -1 },
-    { key: 'investment', label: '투자부담 · Investment Burden', unit: '%', min: -20, max: 20, step: 4, range: 20, dir: -1 }
+    { key: 'utilization', label: '이용률', unit: '%p', min: -10, max: 10, step: 2, range: 10, dir: 1 },
+    { key: 'availability', label: '가용률', unit: '%p', min: -5, max: 5, step: 1, range: 5, dir: 1 },
+    { key: 'price', label: '충전요금', unit: '%', min: -10, max: 10, step: 2, range: 10, dir: 1 },
+    { key: 'electricity', label: '전력원가', unit: '%', min: -20, max: 20, step: 4, range: 20, dir: -1 },
+    { key: 'sitecost', label: '충전소 비용', unit: '%', min: -20, max: 20, step: 4, range: 20, dir: -1 },
+    { key: 'investment', label: '투자부담', unit: '%', min: -20, max: 20, step: 4, range: 20, dir: -1 }
   ];
 
   const PRESET_DEFS = [
-    { key: 'avail', label: 'Availability Stress', tab: 'journey' },
-    { key: 'start', label: 'Activation Failure Stress', tag: 'Recommended Demo', tab: 'journey' },
-    { key: 'op', label: 'Operation Improve', tab: 'econ' }
+    { key: 'avail', label: 'Availability Stress', display: '가용성 저하', tab: 'journey' },
+    { key: 'start', label: 'Activation Failure Stress', display: '충전 시작 실패 · Activation Failure', tag: '추천 시나리오', tab: 'journey' },
+    { key: 'op', label: 'Operation Improve', display: '운영 개선 · Operation Improve', tab: 'econ' }
   ];
 
   /**
@@ -110,59 +110,59 @@
    */
   const MEASUREMENT_CONTRACTS = {
     faultRate: {
-      area: 'Availability',
+      area: '가용성',
       item: 'Fault Rate',
-      title: 'Fault Rate',
-      type: 'Rate / Diagnostic Metric',
+      title: '장애율 · Fault Rate',
+      type: '비율 / 진단 지표',
       definition: '충전기 또는 충전 세션 관찰 대상 중 Fault 상태가 확인된 비율을 탐색하기 위한 지표입니다.',
-      purpose: 'Availability Leakage가 충전기 Fault와 연결되는지 추가 확인하기 위한 Signal입니다.',
+      purpose: '가용성 이탈이 충전기 장애와 연결되는지 추가로 확인하기 위한 신호입니다.',
       signals: ['Charger Status', 'Fault Code', 'Timestamp'],
       numerator: '정의된 Fault 상태로 분류된 Observation',
       denominator: '정의된 전체 Eligible Observation',
       calculation: 'Fault Observations ÷ Eligible Observations × 100',
-      interpretation: '값이 높을수록 Availability 저하와 Charger Fault 간 관계를 추가 확인할 필요가 있음을 의미합니다.',
+      interpretation: '값이 높을수록 가용성 저하와 충전기 장애 간 관계를 추가로 확인할 필요가 있음을 의미합니다.',
       validation: '실제 Event Schema, Fault 상태 정의, Observation Unit, Denominator 기준은 VoltUp 내부 데이터 및 운영 기준 확인이 필요합니다.'
     },
     authentication: {
-      area: 'Start',
+      area: '충전 시작',
       item: 'Authentication',
-      title: 'Authentication Failure Rate',
-      type: 'Rate / Start Diagnostic Metric',
+      title: '인증 실패율 · Authentication Failure Rate',
+      type: '비율 / 충전 시작 진단 지표',
       definition: '충전 시작 과정에서 인증 절차가 실패한 비율을 탐색하기 위한 지표입니다.',
-      purpose: 'Start Leakage가 인증 과정의 실패와 연결되는지 확인합니다.',
+      purpose: '충전 시작 이탈이 인증 과정의 실패와 연결되는지 확인합니다.',
       signals: ['Authentication Attempt', 'Authentication Result', 'Authentication Type', 'Timestamp'],
       numerator: 'Authentication Failure Attempts',
       denominator: 'Eligible Authentication Attempts',
       calculation: 'Authentication Failure Attempts ÷ Eligible Authentication Attempts × 100',
-      interpretation: '값이 높을수록 Start Failure 중 인증 과정의 영향 여부를 추가 확인할 필요가 있습니다.',
+      interpretation: '값이 높을수록 충전 시작 실패 중 인증 과정의 영향 여부를 추가로 확인할 필요가 있습니다.',
       validation: '실제 인증 유형, 실패 상태 정의, 중복 Retry 처리 기준, Eligible Attempt 기준은 VoltUp 내부 Event Schema 확인이 필요합니다.'
     },
     abnormalTermination: {
-      area: 'Session',
+      area: '충전 세션',
       item: 'Abnormal Termination',
-      title: 'Abnormal Termination Rate',
-      type: 'Rate / Session Diagnostic Metric',
+      title: '비정상 종료율 · Abnormal Termination Rate',
+      type: '비율 / 충전 세션 진단 지표',
       definition: '시작된 충전 세션 중 정상 완료 상태에 도달하지 못하고 비정상 종료된 세션 비율입니다.',
-      purpose: 'Session Leakage가 비정상 종료와 연결되는지 확인합니다.',
+      purpose: '충전 세션 이탈이 비정상 종료와 연결되는지 확인합니다.',
       signals: ['Session Start', 'Session End', 'End Reason', 'Charger Status', 'Communication Context'],
       numerator: 'Abnormally Terminated Sessions',
       denominator: 'Eligible Started Sessions',
       calculation: 'Abnormally Terminated Sessions ÷ Eligible Started Sessions × 100',
-      interpretation: '값이 높을수록 Session Completion 저하와 비정상 종료 간 관계를 추가 분석할 필요가 있습니다.',
+      interpretation: '값이 높을수록 세션 완료 저하와 비정상 종료 간 관계를 추가로 분석할 필요가 있습니다.',
       validation: '실제 정상/비정상 종료 상태 정의와 사용자 정상 중단, 차량 종료, 충전기 오류, 통신 종료 등의 Classification은 VoltUp 운영·Event 기준 확인이 필요합니다.'
     },
     retrySuccess: {
-      area: 'Recovery',
+      area: '복구',
       item: 'Retry Success',
-      title: 'Retry Success Rate',
-      type: 'Rate / Recovery Metric',
+      title: '재시도 성공률 · Retry Success Rate',
+      type: '비율 / 복구 지표',
       definition: '최초 Failure 이후 수행된 Retry 중 정상 Recovery State에 도달한 비율입니다.',
-      purpose: 'Failure 발생 이후 Retry가 실제 Recovery에 기여하는지 확인합니다.',
+      purpose: '실패 발생 이후 재시도가 실제 복구에 기여하는지 확인합니다.',
       signals: ['Failure Event', 'Retry Attempt', 'Retry Result', 'Final State', 'Timestamp'],
       numerator: 'Successful Recovery after Retry',
       denominator: 'Eligible Retry Attempts',
       calculation: 'Successful Retry Recoveries ÷ Eligible Retry Attempts × 100',
-      interpretation: 'Retry 성공률은 현재 Recovery Flow의 효과를 탐색하기 위한 Signal입니다.',
+      interpretation: '재시도 성공률은 현재 복구 흐름의 효과를 탐색하기 위한 신호입니다.',
       validation: 'Retry 정의, 자동 Retry와 사용자 Retry 구분, 중복 Retry, Success State, 최종 Recovery State는 VoltUp 실제 운영 정책 확인이 필요합니다.'
     }
   };
@@ -175,7 +175,39 @@
     'Retry Success': 'retrySuccess'
   };
 
-  const CONTRACT_NOT_DEFINED_HINT = 'Measurement contract not defined in this illustrative model';
+  const CONTRACT_NOT_DEFINED_HINT = '이 예시 모델에는 지표 정의 기준이 없습니다';
+
+  /** Display-only labels. Internal item strings stay the CONTRACT_BY_ITEM keys. */
+  const ITEM_DISPLAY = {
+    'Fault Rate': '장애율 · Fault Rate',
+    'Offline Rate': '오프라인율 · Offline Rate',
+    'Occupancy Rate': '점유율 · Occupancy Rate',
+    'Maintenance Time': '정비 시간 · Maintenance Time',
+    'Authentication': '인증 실패',
+    'Payment': '결제 실패',
+    'Compatibility': '호환 실패',
+    'PnC (Plug & Charge)': 'PnC (Plug & Charge)',
+    'Fallback': '대체 경로 · Fallback',
+    'Abnormal Termination': '비정상 종료 · Abnormal Termination',
+    'Communication Failure': '통신 실패',
+    'Charger Error': '충전기 오류',
+    'Vehicle Error': '차량 오류',
+    'Retry Success': '재시도 성공률 · Retry Success',
+    'Remote Recovery': '원격 복구율 · Remote Recovery',
+    'Repeat Failure': '재발률',
+    'VOC / Sessions': '세션당 VOC · VOC / Sessions'
+  };
+
+  function itemDisplay(label) {
+    return ITEM_DISPLAY[label] || label;
+  }
+
+  function presetDisplay(internalLabel) {
+    for (let i = 0; i < PRESET_DEFS.length; i++) {
+      if (PRESET_DEFS[i].label === internalLabel) return PRESET_DEFS[i].display;
+    }
+    return internalLabel;
+  }
 
   /**
    * Analytics is a side-effect layer. Fixed enumerations only — never DOM text,
@@ -215,14 +247,14 @@
 
   /** Sections are skipped when the contract has no value for them. */
   const CONTRACT_SECTIONS = [
-    { key: 'definition', label: 'Definition' },
-    { key: 'purpose', label: 'Purpose' },
-    { key: 'signals', label: 'Measurement Signal', kind: 'chips' },
-    { key: 'numerator', label: 'Numerator' },
-    { key: 'denominator', label: 'Denominator' },
-    { key: 'calculation', label: 'Calculation', kind: 'formula' },
-    { key: 'interpretation', label: 'Interpretation' },
-    { key: 'validation', label: 'Validation Note', kind: 'muted' }
+    { key: 'definition', label: '정의' },
+    { key: 'purpose', label: '왜 보는가' },
+    { key: 'signals', label: '측정 신호', kind: 'chips' },
+    { key: 'numerator', label: '분자 · Numerator' },
+    { key: 'denominator', label: '분모 · Denominator' },
+    { key: 'calculation', label: '계산식', kind: 'formula' },
+    { key: 'interpretation', label: '해석' },
+    { key: 'validation', label: '실제 적용 전 확인', kind: 'muted' }
   ];
 
   /** Shared horizontal inset so edge stage labels and value texts stay inside the plot. */
@@ -315,7 +347,9 @@
       largestKey: largestKey,
       largestVal: largestVal,
       modified: modified,
-      stateLabel: state.journey.preset || (modified ? 'Scenario Modified' : 'Base Scenario'),
+      stateLabel: state.journey.preset
+        ? ('예시 프리셋 · ' + presetDisplay(state.journey.preset))
+        : (modified ? '시나리오 변경됨' : '기준 시나리오'),
       sessionChangePct: sessionChangePct,
       e2e: Math.round(idx.repeat)
     };
@@ -334,9 +368,9 @@
     const netZero = modified && index === 100;
 
     let stateLabel;
-    if (state.economics.preset) stateLabel = state.economics.preset;
-    else if (!modified) stateLabel = 'Base Scenario';
-    else stateLabel = netZero ? 'Scenario Modified · Net Zero' : 'Scenario Modified';
+    if (state.economics.preset) stateLabel = '예시 프리셋 · ' + presetDisplay(state.economics.preset);
+    else if (!modified) stateLabel = '기준 시나리오';
+    else stateLabel = netZero ? '시나리오 변경됨 · 순효과 0' : '시나리오 변경됨';
 
     const ranked = DRIVERS
       .filter((d) => impacts[d.key] !== 0)
@@ -361,12 +395,12 @@
 
   /** Conjunction particle for the item that precedes 와/과 in a driver list. */
   const KO_CONJUNCTION = {
-    'Utilization': '과',
-    'Availability': '와',
-    'Charging Price': '와',
-    'Electricity Cost': '와',
-    'Site Cost': '와',
-    'Investment Burden': '과'
+    '이용률': '과',
+    '가용률': '과',
+    '충전요금': '과',
+    '전력원가': '와',
+    '충전소 비용': '과',
+    '투자부담': '과'
   };
 
   /** 로 / 으로 depends on whether the spoken last digit ends in a consonant. */
@@ -383,18 +417,18 @@
 
   function interpretEconomics(impacts, sum, index, modified, netZero) {
     if (!modified) return '현재 시나리오는 기준 시나리오와 동일합니다.';
-    if (netZero) return '현재 Scenario에서는 긍정적 영향과 부정적 영향이 상쇄되어 Relative Economics Index가 기준 100에 머뭅니다.';
+    if (netZero) return '긍정적 영향과 부정적 영향이 서로 상쇄되어 상대 경제성 지수는 기준 100을 유지합니다.';
 
     const posNames = DRIVERS.filter((d) => impacts[d.key] > 0).map(shortDriverLabel);
     const negNames = DRIVERS.filter((d) => impacts[d.key] < 0).map(shortDriverLabel);
     const pos = joinDriverNames(posNames) + '의 긍정적 영향';
     const neg = joinDriverNames(negNames) + '의 부정적 영향';
-    const move = 'Relative Economics Index가 기준 100에서 ' + index + indexParticle(index) + ' 이동합니다.';
+    const move = '상대 경제성 지수는 기준 100에서 ' + index + indexParticle(index) + ' 변화했습니다.';
 
-    if (!negNames.length) return '현재 Scenario에서는 ' + pos + '으로 ' + move;
-    if (!posNames.length) return '현재 Scenario에서는 ' + neg + '으로 ' + move;
-    if (sum > 0) return '현재 Scenario에서는 ' + pos + '이 ' + neg + '보다 크게 나타나 ' + move;
-    return '현재 Scenario에서는 ' + neg + '이 ' + pos + '보다 크게 나타나 ' + move;
+    if (!negNames.length) return '현재 시나리오에서는 ' + pos + '으로 ' + move;
+    if (!posNames.length) return '현재 시나리오에서는 ' + neg + '으로 ' + move;
+    if (sum > 0) return '현재 시나리오에서는 ' + pos + '이 ' + neg + '보다 크게 나타납니다. ' + move;
+    return '현재 시나리오에서는 ' + neg + '이 ' + pos + '보다 크게 나타납니다. ' + move;
   }
 
   /**
@@ -625,7 +659,7 @@
     values.forEach((label) => {
       const key = CONTRACT_BY_ITEM[label];
       if (!key) {
-        const span = chip(label);
+        const span = chip(itemDisplay(label));
         span.title = CONTRACT_NOT_DEFINED_HINT;
         container.appendChild(span);
         return;
@@ -633,8 +667,8 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'chip';
-      btn.textContent = label;
-      btn.title = 'Measurement Contract 보기';
+      btn.textContent = itemDisplay(label);
+      btn.title = '지표 정의 기준 보기';
       btn.setAttribute('aria-haspopup', 'dialog');
       btn.addEventListener('click', () => openContract(key, btn));
       container.appendChild(btn);
@@ -648,7 +682,7 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'preset-button';
-      btn.appendChild(document.createTextNode(p.label));
+      btn.appendChild(document.createTextNode(p.display));
       if (p.tag) {
         const tag = document.createElement('span');
         tag.className = 'preset-button__tag';
@@ -705,7 +739,7 @@
       const foot = document.createElement('div');
       foot.className = 'slider-row__foot';
       const footLabel = document.createElement('span');
-      footLabel.textContent = 'Cumulative Demand Index';
+      footLabel.textContent = '누적 수요 지수';
       const idxOut = document.createElement('span');
       idxOut.className = 'slider-row__idx';
       foot.append(footLabel, idxOut);
@@ -723,7 +757,7 @@
       btn.className = 'funnel__node';
       btn.textContent = i + 1;
       btn.setAttribute('aria-pressed', 'false');
-      btn.setAttribute('aria-label', J_LABELS[key] + ' Stage 선택');
+      btn.setAttribute('aria-label', J_LABELS[key] + ' 단계 선택');
       btn.addEventListener('click', () => selectStage(key));
       dom.jFunnelNodes.appendChild(btn);
       refs.jNodes.push(btn);
@@ -782,7 +816,7 @@
       head.type = 'button';
       head.className = 'diagnostic-card__head';
       head.setAttribute('aria-pressed', 'false');
-      head.setAttribute('aria-label', d.title + ' Stage 선택');
+      head.setAttribute('aria-label', d.title + ' 단계 선택');
 
       const icon = document.createElement('span');
       icon.className = 'diagnostic-card__icon';
@@ -801,7 +835,7 @@
         if (!contractKey) {
           const item = document.createElement('div');
           item.className = 'diagnostic-card__item';
-          item.textContent = label;
+          item.textContent = itemDisplay(label);
           item.title = CONTRACT_NOT_DEFINED_HINT;
           card.appendChild(item);
           return;
@@ -809,8 +843,8 @@
         const item = document.createElement('button');
         item.type = 'button';
         item.className = 'diagnostic-card__item';
-        item.textContent = label;
-        item.title = 'Measurement Contract 보기';
+        item.textContent = itemDisplay(label);
+        item.title = '지표 정의 기준 보기';
         item.setAttribute('aria-haspopup', 'dialog');
         /* Opening a contract must never change the Journey stage context. */
         item.addEventListener('click', (event) => {
@@ -916,7 +950,7 @@
       refs.wfBars.push({ rect: rect, text: text });
     }
 
-    const labels = ['Base 100'].concat(DRIVERS.map(shortDriverLabel)).concat(['Current Index']);
+    const labels = ['기준 100'].concat(DRIVERS.map(shortDriverLabel)).concat(['현재 지수']);
     labels.forEach((text) => {
       const cell = document.createElement('div');
       cell.className = 'waterfall__labels-cell';
@@ -1023,7 +1057,7 @@
     if (stageInfo) {
       const leakVal = model.leak[sel] ? Math.round(model.leak[sel]) : 0;
       dom.jDecisionBoundary.hidden = false;
-      dom.jContext.textContent = 'Decision Boundary · ' + stageInfo.context;
+      dom.jContext.textContent = '판단 경계 · ' + stageInfo.context;
       dom.jInfer.textContent = stageInfo.infer + ' (-' + leakVal + ').';
       dom.jValidate.textContent = stageInfo.validate;
       fillChips(dom.jEvidence, stageInfo.evidence);
@@ -1039,7 +1073,7 @@
 
     const showEmpty = !!sel && !stageInfo;
     dom.diagEmpty.hidden = !showEmpty;
-    if (showEmpty) dom.diagEmpty.textContent = J_LABELS[sel] + ' · 정의된 확인영역 없음';
+    if (showEmpty) dom.diagEmpty.textContent = J_LABELS[sel] + ' · 정의된 확인 영역 없음';
 
     dom.jInfoBody.hidden = !state.journey.infoOpen;
     dom.jInfoToggle.setAttribute('aria-expanded', state.journey.infoOpen ? 'true' : 'false');
