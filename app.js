@@ -121,7 +121,7 @@
       denominator: '정의된 전체 Eligible Observation',
       calculation: 'Fault Observations ÷ Eligible Observations × 100',
       interpretation: '값이 높을수록 가용성 저하와 충전기 장애 간 관계를 추가로 확인할 필요가 있음을 의미합니다.',
-      validation: '실제 Event Schema, Fault 상태 정의, Observation Unit, Denominator 기준은 VoltUp 내부 데이터 및 운영 기준 확인이 필요합니다.'
+      validation: '실제 Event Schema, Fault 상태 정의, Observation Unit, Denominator 기준은 내부 데이터 및 운영 기준 확인이 필요합니다.'
     },
     authentication: {
       area: '충전 시작',
@@ -135,7 +135,7 @@
       denominator: 'Eligible Authentication Attempts',
       calculation: 'Authentication Failure Attempts ÷ Eligible Authentication Attempts × 100',
       interpretation: '값이 높을수록 충전 시작 실패 중 인증 과정의 영향 여부를 추가로 확인할 필요가 있습니다.',
-      validation: '실제 인증 유형, 실패 상태 정의, 중복 Retry 처리 기준, Eligible Attempt 기준은 VoltUp 내부 Event Schema 확인이 필요합니다.'
+      validation: '실제 인증 유형, 실패 상태 정의, 중복 Retry 처리 기준, Eligible Attempt 기준은 내부 Event Schema 확인이 필요합니다.'
     },
     abnormalTermination: {
       area: '충전 세션',
@@ -149,7 +149,7 @@
       denominator: 'Eligible Started Sessions',
       calculation: 'Abnormally Terminated Sessions ÷ Eligible Started Sessions × 100',
       interpretation: '값이 높을수록 세션 완료 저하와 비정상 종료 간 관계를 추가로 분석할 필요가 있습니다.',
-      validation: '실제 정상/비정상 종료 상태 정의와 사용자 정상 중단, 차량 종료, 충전기 오류, 통신 종료 등의 Classification은 VoltUp 운영·Event 기준 확인이 필요합니다.'
+      validation: '실제 정상/비정상 종료 상태 정의와 사용자 정상 중단, 차량 종료, 충전기 오류, 통신 종료 등의 Classification은 운영·Event 기준 확인이 필요합니다.'
     },
     retrySuccess: {
       area: '복구',
@@ -163,7 +163,7 @@
       denominator: 'Eligible Retry Attempts',
       calculation: 'Successful Retry Recoveries ÷ Eligible Retry Attempts × 100',
       interpretation: '재시도 성공률은 현재 복구 흐름의 효과를 탐색하기 위한 신호입니다.',
-      validation: 'Retry 정의, 자동 Retry와 사용자 Retry 구분, 중복 Retry, Success State, 최종 Recovery State는 VoltUp 실제 운영 정책 확인이 필요합니다.'
+      validation: 'Retry 정의, 자동 Retry와 사용자 Retry 구분, 중복 Retry, Success State, 최종 Recovery State는 실제 운영 정책 확인이 필요합니다.'
     }
   };
 
