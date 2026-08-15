@@ -179,7 +179,7 @@ body.has-modal { overflow: hidden; }
 /* ---------------- Content shell ---------------- */
 
 .content {
-  padding: 16px var(--gutter) 24px;
+  padding: 16px var(--gutter) 15px;
 }
 
 .layout-grid {
@@ -349,8 +349,8 @@ body.has-modal { overflow: hidden; }
 /* ---------------- Sliders ---------------- */
 
 .slider-row {
-  margin-bottom: 14px;
-  padding-bottom: 14px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--border-subtle);
 }
 
