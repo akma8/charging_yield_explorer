@@ -650,7 +650,7 @@
 
   function fillChips(container, values) {
     container.textContent = '';
-    values.forEach((v) => container.appendChild(chip(v)));
+    values.forEach((v) => container.appendChild(chip(itemDisplay(v))));
   }
 
   /** Chip list where labels with a measurement contract become buttons. */
